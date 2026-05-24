@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Адмін-панель – FlowerNL</title>
+  <meta name="description" content="Панель адміністратора сайту FlowerNL для керування товарами та замовленнями.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="admin-page">
+<header class="site-header">
+  <div class="container header__inner">
+    <a class="logo" href="index.html" aria-label="FlowerNL">
+      <img src="img/logo.svg" alt="FlowerNL">
+    </a>
+    <button class="nav-toggle" type="button" aria-label="Відкрити меню" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav" aria-label="Головна навігація">
+      <a class="nav__link" href="index.html">Головна</a>
+      <a class="nav__link" href="catalog.html">Каталог</a>
+      <a class="nav__link" href="delivery.html">Доставка</a>
+      <a class="nav__link" href="about.html">Про магазин</a>
+      <a class="nav__link" href="contacts.html">Контакти</a>
+    </nav>
+    <button class="btn btn--small btn--light" type="button" data-admin-logout>Вийти</button>
+  </div>
+</header>
+<main>
+
+<section class="page-hero">
+  <div class="container">
+    <span class="eyebrow">Закрита адмін-панель</span>
+    <h1>Керування товарами та замовленнями</h1>
+    <p>Панель адміністратора працює через localStorage, захищена клієнтською перевіркою логіна і пароля та не виводиться у публічній навігації сайту.</p>
+    <div class="notice notice--muted">Навчальна статична реалізація: дані зберігаються у браузері, а облікові дані адміністратора задаються у файлі <code>config/admin-config.js</code>.</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container admin-layout">
+    <aside class="admin-sidebar panel">
+      <h2>Розділи</h2>
+      <div class="admin-tabs">
+        <button class="admin-tab is-active" type="button" data-admin-tab="dashboard">Огляд</button>
+        <button class="admin-tab" type="button" data-admin-tab="products">Товари</button>
+        <button class="admin-tab" type="button" data-admin-tab="orders">Замовлення</button>
+        <button class="admin-tab" type="button" data-admin-tab="settings">Дані</button>
+      </div>
+    </aside>
+
+    <div>
+      <section class="admin-section is-active" data-admin-section="dashboard">
+        <h2 class="block-title">Огляд системи</h2>
+        <div class="stats-grid" data-admin-stats></div>
+      </section>
+
+      <section class="admin-section" data-admin-section="products">
+        <div class="section__head">
+          <div>
+            <h2>Товари</h2>
+            <p>Додавання, редагування, видалення позицій каталогу та завантаження зображень у різних форматах.</p>
+          </div>
+          <button class="btn" type="button" data-add-product>Додати товар</button>
+        </div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Фото</th>
+                <th>Назва</th>
+                <th>Ціна</th>
+                <th>Кількість</th>
+                <th>Статус</th>
+                <th>Дії</th>
+              </tr>
+            </thead>
+            <tbody data-admin-products></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="admin-section" data-admin-section="orders">
+        <div class="section__head">
+          <div>
+            <h2>Замовлення</h2>
+            <p>Замовлення автоматично додаються після оформлення на сторінці checkout.</p>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Номер</th>
+                <th>Клієнт</th>
+                <th>Склад</th>
+                <th>Сума</th>
+                <th>Доставка</th>
+                <th>Статус</th>
+                <th>Дії</th>
+              </tr>
+            </thead>
+            <tbody data-admin-orders></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="admin-section" data-admin-section="settings">
+        <h2 class="block-title">Службові дії</h2>
+        <div class="panel settings-panel">
+          <p>Цей блок потрібен для демонстрації керування початковими даними проєкту.</p>
+          <div class="actions">
+            <button class="btn btn--light" type="button" data-reset-products>Відновити початкові товари</button>
+            <button class="btn btn--danger" type="button" data-clear-orders>Очистити замовлення</button>
+          </div>
+          <div class="notice notice--muted">
+            Зображення, додані адміністратором, зберігаються у localStorage як Data URL. Для стабільної роботи бажано використовувати оптимізовані файли до 2 МБ.
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+
+<div class="modal" data-product-editor>
+  <div class="modal__dialog">
+    <div class="modal__head">
+      <h2 data-editor-title>Додавання товару</h2>
+      <button class="close-btn" type="button" data-close-editor aria-label="Закрити">×</button>
+    </div>
+    <form data-product-form>
+      <div class="form-grid">
+        <div class="field">
+          <label>Назва</label>
+          <input class="input" name="name" required>
+        </div>
+        <div class="field">
+          <label>Категорія</label>
+          <select class="select" name="category" required></select>
+        </div>
+        <div class="field">
+          <label>Ціна, грн</label>
+          <input class="input" name="price" type="number" min="1" required>
+        </div>
+        <div class="field">
+          <label>Кількість</label>
+          <input class="input" name="quantity" type="number" min="0" required>
+        </div>
+        <div class="field is-full">
+          <label>Зображення товару</label>
+          <div class="image-upload">
+            <img data-image-preview src="img/product-1.svg" alt="Попередній перегляд зображення">
+            <div>
+              <input class="input" name="imageFile" type="file" accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml">
+              <input name="image" type="hidden">
+              <p class="field-hint">Підтримуються JPEG, PNG, WebP, GIF, SVG. Файл зберігається у браузері як Data URL.</p>
+              <button class="btn btn--small btn--light" type="button" data-clear-image>Повернути стандартне фото</button>
+            </div>
+          </div>
+        </div>
+        <div class="field is-full">
+          <label>Опис</label>
+          <textarea class="textarea" name="description" required></textarea>
+        </div>
+        <div class="field is-full">
+          <label>Догляд</label>
+          <textarea class="textarea" name="care" required></textarea>
+        </div>
+        <label class="field is-full checkbox-field">
+          <input name="inStock" type="checkbox">
+          <span>Товар активний</span>
+        </label>
+      </div>
+      <div style="margin-top:16px">
+        <button class="btn" type="submit">Зберегти товар</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+</main>
+<footer class="site-footer">
+  <div class="container footer__grid">
+    <div>
+      <img class="footer__logo" src="img/logo.svg" alt="FlowerNL">
+      <p>Демонстраційний сайт магазину квітів з Нідерландів, реалізований засобами HTML, CSS і JavaScript.</p>
+    </div>
+    <div>
+      <h3>Навігація</h3>
+      <a href="catalog.html">Каталог</a>
+      <a href="delivery.html">Доставка й оплата</a>
+      <a href="contacts.html">Контакти</a>
+    </div>
+    <div>
+      <h3>Контакти</h3>
+      <p>+38 (067) 000-00-00</p>
+      <p>info@flowernl.demo</p>
+      <p>Пн-Нд: 09:00-20:00</p>
+    </div>
+  </div>
+</footer>
+<script src="js/data.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/main.js"></script>
+<script src="config/admin-config.js"></script>
+<script src="js/admin-auth.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
