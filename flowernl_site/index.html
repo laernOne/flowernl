@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FlowerNL – магазин квітів з Нідерландів</title>
+  <meta name="description" content="Адаптивний сайт магазину квітів з Нідерландів на HTML, CSS і JavaScript.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="container header__inner">
+    <a class="logo" href="index.html" aria-label="FlowerNL">
+      <img src="img/logo.svg" alt="FlowerNL">
+    </a>
+    <button class="nav-toggle" type="button" aria-label="Відкрити меню" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav" aria-label="Головна навігація">
+      <a class="nav__link is-active" href="index.html">Головна</a>
+<a class="nav__link " href="catalog.html">Каталог</a>
+<a class="nav__link " href="delivery.html">Доставка</a>
+<a class="nav__link " href="about.html">Про магазин</a>
+<a class="nav__link " href="contacts.html">Контакти</a>
+    </nav>
+    <a class="cart-link" href="cart.html" aria-label="Кошик">
+      <span>Кошик</span>
+      <strong data-cart-count>0</strong>
+    </a>
+  </div>
+</header>
+<main>
+
+<section class="hero">
+  <div class="container hero__grid">
+    <div>
+      <span class="eyebrow">Свіжі поставки з Нідерландів</span>
+      <h1>Адаптивний сайт магазину квітів з каталогом, кошиком і керуванням замовленнями</h1>
+      <p>FlowerNL демонструє роботу клієнтського інтернет-магазину: перегляд товарів, фільтрацію, додавання в кошик, оформлення замовлення та службове керування даними.</p>
+      <div class="hero__actions">
+        <a class="btn" href="catalog.html">Перейти до каталогу</a>
+      </div>
+    </div>
+    <div class="hero__visual">
+      <img src="img/product-5.svg" alt="Весняний букет Amsterdam">
+      <div class="hero__badge">
+        <strong>Демонстраційна інформаційна система</strong>
+        <p>Дані товарів, кошика і замовлень зберігаються у localStorage браузера.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <div>
+        <h2>Категорії продукції</h2>
+        <p>Каталог охоплює популярні групи нідерландських квітів і композицій.</p>
+      </div>
+      <a class="btn btn--light" href="catalog.html">Усі товари</a>
+    </div>
+    <div class="cards-grid">
+      <a class="category-card" href="catalog.html">
+        <span>🌷</span>
+        <h3>Тюльпани</h3>
+        <p>Сезонні сорти для монобукетів і подарунків.</p>
+      </a>
+      <a class="category-card" href="catalog.html">
+        <span>🌹</span>
+        <h3>Троянди</h3>
+        <p>Преміальні позиції для класичних композицій.</p>
+      </a>
+      <a class="category-card" href="catalog.html">
+        <span>💐</span>
+        <h3>Букети</h3>
+        <p>Готові рішення для подій, привітань і доставки.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section__head">
+      <div>
+        <h2>Популярні товари</h2>
+        <p>Перші позиції каталогу виводяться динамічно з локального сховища.</p>
+      </div>
+    </div>
+    <div class="product-grid" data-home-products></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="cards-grid">
+      <article class="feature-card">
+        <span>⚙️</span>
+        <h3>Службове керування товарами</h3>
+        <p>У проєкті передбачено окремий службовий модуль для додавання, редагування та видалення товарів.</p>
+      </article>
+      <article class="feature-card">
+        <span>🧾</span>
+        <h3>Облік замовлень</h3>
+        <p>Замовлення з checkout-сторінки автоматично з’являються в адмін-панелі.</p>
+      </article>
+      <article class="feature-card">
+        <span>📱</span>
+        <h3>Адаптивність</h3>
+        <p>Інтерфейс адаптовано для мобільних екранів, планшетів і десктопів.</p>
+      </article>
+    </div>
+  </div>
+</section>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const box = document.querySelector("[data-home-products]");
+  if (!box) return;
+  const products = Store.getProducts().slice(0, 4);
+  box.innerHTML = products.map(product => `
+    <article class="product-card">
+      <a class="product-card__image" href="catalog.html?product=${product.id}">
+        <img src="${product.image}" alt="${product.name}">
+      </a>
+      <div class="product-card__body">
+        <div class="product-card__meta">
+          <span class="badge">${product.categoryName}</span>
+          ${product.inStock ? '<span class="badge badge--ok">У наявності</span>' : '<span class="badge badge--danger">Немає</span>'}
+        </div>
+        <h3>${product.name}</h3>
+        <p>${product.description}</p>
+        <div class="product-card__bottom">
+          <span class="price">${Store.formatCurrency(product.price)}</span>
+          <button class="btn btn--small" type="button" data-add-to-cart="${product.id}">До кошика</button>
+        </div>
+      </div>
+    </article>
+  `).join("");
+});
+</script>
+
+</main>
+<footer class="site-footer">
+  <div class="container footer__grid">
+    <div>
+      <img class="footer__logo" src="img/logo.svg" alt="FlowerNL">
+      <p>Демонстраційний сайт магазину квітів з Нідерландів, реалізований засобами HTML, CSS і JavaScript.</p>
+    </div>
+    <div>
+      <h3>Навігація</h3>
+      <a href="catalog.html">Каталог</a>
+      <a href="delivery.html">Доставка й оплата</a>
+      <a href="contacts.html">Контакти</a>
+    </div>
+    <div>
+      <h3>Контакти</h3>
+      <p>+38 (067) 000-00-00</p>
+      <p>info@flowernl.demo</p>
+      <p>Пн-Нд: 09:00-20:00</p>
+    </div>
+  </div>
+</footer>
+<script src="js/data.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>
